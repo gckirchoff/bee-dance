@@ -1,11 +1,16 @@
 import { roundRect } from '../helpers/shapes';
+import { Vector } from './Vector';
 
 export class Beehive {
-  w: number;
-  h: number;
+  position: Vector;
+
+  private w: number;
+  private h: number;
+
   constructor(w: number, h: number) {
     this.w = w;
     this.h = h;
+    this.position = new Vector(w / 2, h);
   }
 
   draw = (ctx: CanvasRenderingContext2D): void => {
