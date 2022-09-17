@@ -7,7 +7,7 @@
   let canvas: HTMLCanvasElement;
   let frame = 0;
   let frameLimit = 1;
-  let x = 200;
+  let x = 0;
   let y = 200;
 
   let xIncrement = 5;
@@ -29,14 +29,14 @@
       ctx.strokeStyle = 'pink';
       ctx.fill();
       if (x > w - r) {
-        xIncrement *= -1;
+        xIncrement = Math.abs(xIncrement) * -1;
       } else if (x < r) {
-        xIncrement *= -1;
+        xIncrement = Math.abs(xIncrement);
       }
       if (y > h - r) {
-        yIncrement *= -1;
+        yIncrement = Math.abs(yIncrement) * -1;
       } else if (y < r) {
-        yIncrement *= -1;
+        yIncrement = Math.abs(yIncrement);
       }
       x += xIncrement;
       y += yIncrement;
