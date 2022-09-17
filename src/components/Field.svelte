@@ -1,6 +1,7 @@
 <script lang="ts">
   import { afterUpdate, onMount } from 'svelte';
-  import { Field } from '../utils/draw-agents/Field';
+  import { Field } from '../utils/draw/agents/Field';
+  import { Beehive } from '../utils/draw/agents/Beehive';
 
   let w: number;
   let h: number;
@@ -27,6 +28,9 @@
 
       const field = new Field(w, h);
       field.draw(ctx);
+
+      const beehive = new Beehive(w, h);
+      beehive.draw(ctx);
 
       animationFrame = requestAnimationFrame(animate);
     }
