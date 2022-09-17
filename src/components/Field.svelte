@@ -21,15 +21,15 @@
     canvas.width = w;
     canvas.height = h;
     const ctx = canvas.getContext('2d');
-    let animationFrame = requestAnimationFrame(animate);
 
+    const field = new Field(w, h);
+    const beehive = new Beehive(w, h);
+
+    let animationFrame = requestAnimationFrame(animate);
     function animate(t: number) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      const field = new Field(w, h);
       field.draw(ctx);
-
-      const beehive = new Beehive(w, h);
       beehive.draw(ctx);
 
       animationFrame = requestAnimationFrame(animate);
