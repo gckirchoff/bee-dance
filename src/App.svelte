@@ -1,10 +1,11 @@
 <script lang="ts">
   import Canvas from './components/Canvas.svelte';
+  import Field from './components/Field.svelte';
 </script>
 
 <main>
   <section class="upper">
-    <div class="canvas-container left"><Canvas /></div>
+    <div class="canvas-container left"><Field /></div>
     <div class="canvas-container right" />
   </section>
   <section class="lower">Section 2</section>

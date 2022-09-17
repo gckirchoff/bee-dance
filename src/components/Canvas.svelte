@@ -45,7 +45,7 @@
     function loop(t: number) {
       frame++;
       if (frame % frameLimit === 0) {
-        animate();
+        animate(t);
       }
       animationFrame = requestAnimationFrame(loop);
     }
