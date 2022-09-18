@@ -30,6 +30,8 @@ export class Field {
     this.drawGrass(ctx);
   };
 
+  getCenterOfEarth = (): Vector => this.center;
+
   private generateGrass = (num = 100): Vector[] => {
     const { x: centerX, y: centerY } = this.center;
     const grassCords: Vector[] = [];
