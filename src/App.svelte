@@ -1,6 +1,14 @@
 <script lang="ts">
   import Canvas from './components/Canvas.svelte';
   import Field from './components/Field.svelte';
+  import Range from './components/Range.svelte';
+  import { minsToTime } from './utils/general';
+
+  let timeInMins = 720;
+
+  const updateTime = ({ detail: { value } }) => {
+    timeInMins = value;
+  };
 </script>
 
 <main>
@@ -8,7 +16,18 @@
     <div class="canvas-container left"><Field /></div>
     <div class="canvas-container right" />
   </section>
-  <section class="lower">Section 2</section>
+  <section class="lower">
+    Section 2
+    <label for="time-input">Time: {minsToTime(timeInMins)}</label>
+    <Range
+      on:change={updateTime}
+      initialValue={timeInMins}
+      min={360}
+      max={1080}
+      showTooltip={false}
+      id="time-input"
+    />
+  </section>
 </main>
 
 <style>
