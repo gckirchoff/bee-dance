@@ -17,7 +17,6 @@
     <div class="canvas-container right" />
   </section>
   <section class="lower">
-    Section 2
     <label for="time-input">Time: {minsToTime(timeInMins)}</label>
     <Range
       on:change={updateTime}
