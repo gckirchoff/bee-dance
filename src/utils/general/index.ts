@@ -23,3 +23,24 @@ const cleanUpTimeString = (time: number): string =>
 
 const getMeridiem = (hours: number): Meridiem =>
   hours >= 12 ? Meridiem.PM : Meridiem.AM;
+
+export const toRadians = (degrees: number): number => (degrees * Math.PI) / 180;
+
+export const toDegrees = (rads: number): number => (rads * 180) / Math.PI;
+
+export const randomRange = (min: number, max: number): number =>
+  Math.random() * (max - min) + min;
+
+export const scale = ({
+  num,
+  inRange,
+  outRange,
+}: {
+  num: number;
+  inRange: [number, number];
+  outRange: [number, number];
+}) => {
+  const [inMin, inMax] = inRange;
+  const [outMin, outMax] = outRange;
+  return ((num - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
+};
