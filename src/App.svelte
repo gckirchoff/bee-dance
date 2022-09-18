@@ -13,7 +13,7 @@
 
 <main>
   <section class="upper">
-    <div class="canvas-container left"><Field /></div>
+    <div class="canvas-container left"><Field {timeInMins} /></div>
     <div class="canvas-container right" />
   </section>
   <section class="lower">
