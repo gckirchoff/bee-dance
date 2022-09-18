@@ -2,6 +2,9 @@
   import { afterUpdate, onMount } from 'svelte';
   import { Field } from '../utils/draw/agents/Field';
   import { Beehive } from '../utils/draw/agents/Beehive';
+  import { Sun } from '../utils/draw/agents/Sun';
+
+  export let timeInMins: number;
 
   let w: number;
   let h: number;
@@ -25,12 +28,16 @@
     const field = new Field(w, h);
     const beehive = new Beehive(w, h);
 
+    const centerOfEarth = field.getCenterOfEarth();
+    const sun = new Sun(w, h, centerOfEarth);
+
     let animationFrame = requestAnimationFrame(animate);
     function animate(t: number) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       field.draw(ctx);
       beehive.draw(ctx);
+      sun.draw(timeInMins, ctx);
 
       animationFrame = requestAnimationFrame(animate);
     }
