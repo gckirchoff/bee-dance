@@ -67,7 +67,6 @@ export class Flower {
         fill: true,
       });
       ctx.fill();
-
       ctx.restore();
     }
   };
