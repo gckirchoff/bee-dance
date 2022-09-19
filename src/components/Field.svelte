@@ -3,6 +3,7 @@
   import { Field } from '../utils/draw/agents/Field';
   import { Beehive } from '../utils/draw/agents/Beehive';
   import { Sun } from '../utils/draw/agents/Sun';
+  import { Vector } from '../utils/draw/agents/Vector';
 
   export let timeInMins: number;
 
@@ -10,15 +11,10 @@
   let h: number;
 
   let canvas: HTMLCanvasElement;
-  let frame = 0;
-  let frameLimit = 1;
-  let x = 0;
-  let y = 200;
 
-  let xIncrement = 5;
-  let yIncrement = 5;
+  let flowerLocation: Vector;
 
-  afterUpdate(() => console.log('updating'));
+  let handleCanvasClick: (e: Event) => void;
 
   onMount(() => {
     canvas.width = w;
@@ -31,11 +27,22 @@
     const centerOfEarth = field.getCenterOfEarth();
     const sun = new Sun(w, h, centerOfEarth);
 
+    handleCanvasClick = (e) => {
+      const clickLocation = new Vector(e.x, e.y);
+      if (!field.isInField(clickLocation)) {
+        return;
+      }
+      flowerLocation = clickLocation;
+    };
+
     let animationFrame = requestAnimationFrame(animate);
     function animate(t: number) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       field.draw(ctx);
+      if (flowerLocation) {
+        field.drawFlower(flowerLocation, ctx);
+      }
       beehive.draw(ctx);
       sun.draw(timeInMins, ctx);
 
@@ -49,7 +56,12 @@
 </script>
 
 <div bind:clientWidth={w} bind:clientHeight={h}>
-  <canvas bind:this={canvas} width={200} height={200} />
+  <canvas
+    on:click={handleCanvasClick}
+    bind:this={canvas}
+    width={200}
+    height={200}
+  />
 </div>
 
 <style>
