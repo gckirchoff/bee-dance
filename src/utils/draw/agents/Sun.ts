@@ -12,9 +12,6 @@ export class Sun {
     this.h = h;
     this.centerOfEarth = centerOfEarth;
     this.radius = w * 1.67;
-    console.log('this.w', w);
-    console.log('this.h', h);
-    console.log('this.radius', this.radius);
   }
 
   draw = (timeInMins: number, ctx: CanvasRenderingContext2D): void => {
