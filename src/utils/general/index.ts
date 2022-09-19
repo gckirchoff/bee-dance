@@ -44,3 +44,12 @@ export const scale = ({
   const [outMin, outMax] = outRange;
   return ((num - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
 };
+
+export const average = (arr: number[]): number => {
+  const arrLength = arr.length;
+  let sum = 0;
+  for (let num of arr) {
+    sum += num;
+  }
+  return sum / arrLength;
+};
