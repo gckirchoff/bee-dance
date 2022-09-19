@@ -22,19 +22,19 @@ export class Flower {
     ctx.save();
     const { x: flowerX, y: flowerY } = this.flowerLocation;
     ctx.translate(flowerX, flowerY);
+
     const scale = average([this.w, this.h]);
     const stemWidth = scale * 0.005;
     const stemHeight = scale * 0.05;
-    ctx.fillStyle = this.stemColor;
-    ctx.fillRect(-stemWidth / 2, -stemHeight, stemWidth, stemHeight);
     const flowerHeadRadius = scale * 0.012;
-    ctx.translate(0, -stemHeight);
-    this.drawPetals(this.numOfPetals, flowerHeadRadius, scale, ctx);
-    ctx.fillStyle = this.flowerHeadColor;
-    ctx.beginPath();
-    ctx.arc(0, 0, flowerHeadRadius, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.fillStyle = this.stemColor;
 
+    ctx.fillRect(-stemWidth / 2, -stemHeight, stemWidth, stemHeight);
+
+    ctx.translate(0, -stemHeight);
+
+    this.drawPetals(this.numOfPetals, flowerHeadRadius, scale, ctx);
+    this.drawFlowerHead(flowerHeadRadius, ctx);
     ctx.restore();
   };
 
@@ -69,5 +69,15 @@ export class Flower {
       ctx.fill();
       ctx.restore();
     }
+  };
+
+  private drawFlowerHead = (
+    flowerHeadRadius: number,
+    ctx: CanvasRenderingContext2D
+  ) => {
+    ctx.fillStyle = this.flowerHeadColor;
+    ctx.beginPath();
+    ctx.arc(0, 0, flowerHeadRadius, 0, Math.PI * 2);
+    ctx.fill();
   };
 }
