@@ -1,8 +1,12 @@
 <script lang="ts">
   import { afterUpdate, onMount } from 'svelte';
+  import { average, toRadians } from '../utils/general';
+  import { BEE_WIDTH, BEE_HEIGHT } from '../constants';
   import Bee from '../assets/bee.svg';
   let w: number;
   let h: number;
+
+  let y = 0;
 
   let canvas: HTMLCanvasElement;
 
@@ -18,15 +22,36 @@
     const bee = new Image();
     bee.src = Bee;
 
+    let danceRight = true;
+    let timeUntilFlip = 4000;
+    let lastFlip = 0;
+
     let animationFrame = requestAnimationFrame(animate);
     function animate(t: number) {
       ctx.clearRect(0, 0, canvas.width / 2, canvas.height / 2);
       canvas.width = w;
+      ctx.fillStyle = 'green';
+      const scale = average([w, h]);
+      const danceLineWidth = scale * 0.02;
+
+      // Draw bee path
       ctx.save();
+      ctx.fillStyle = 'grey';
+      ctx.strokeStyle = 'grey';
+      ctx.lineWidth = danceLineWidth;
       ctx.translate(w * 0.5, h * 0.5);
-      ctx.fillRect(0, 0, 10, 10);
-      ctx.scale(0.5, 0.5);
-      ctx.drawImage(bee, -180, -170);
+      ctx.fillRect(danceLineWidth * -0.5, h * -0.3, danceLineWidth, h * 0.6);
+      ctx.beginPath();
+      if (t > lastFlip + timeUntilFlip) {
+        danceRight = !danceRight;
+        lastFlip = t;
+      }
+      ctx.arc(0, 0, h * 0.2915, toRadians(90), toRadians(270), danceRight);
+      ctx.stroke();
+
+      ctx.translate(0, h * 0.3);
+      ctx.scale(scale * 0.0004, scale * 0.0004);
+      ctx.drawImage(bee, -BEE_WIDTH / 2, -BEE_HEIGHT / 2);
       ctx.restore();
 
       animationFrame = requestAnimationFrame(animate);
