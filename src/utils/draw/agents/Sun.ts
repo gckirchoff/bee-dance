@@ -1,4 +1,4 @@
-import { scale, toRadians } from '../../general';
+import { average, scale, toRadians } from '../../general';
 import { Vector } from './Vector';
 
 export class Sun {
@@ -6,6 +6,7 @@ export class Sun {
   h: number;
   centerOfEarth: Vector;
   radius: number;
+  private sunRadius: number;
 
   // Assigned in draw
   position: Vector | undefined;
@@ -14,7 +15,9 @@ export class Sun {
     this.w = w;
     this.h = h;
     this.centerOfEarth = centerOfEarth;
-    this.radius = w * 1.67;
+    const dimensionScale = average([w, h]);
+    this.radius = dimensionScale * 1.67;
+    this.sunRadius = dimensionScale * 0.05;
   }
 
   draw = (timeInMins: number, ctx: CanvasRenderingContext2D): void => {
@@ -34,7 +37,7 @@ export class Sun {
     ctx.fillStyle = 'yellow';
     ctx.translate(sunX, sunY);
     ctx.beginPath();
-    ctx.arc(0, 0, this.h * 0.05, 0, Math.PI * 2);
+    ctx.arc(0, 0, this.sunRadius, 0, Math.PI * 2);
     ctx.fill();
     ctx.restore();
   };
