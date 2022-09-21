@@ -16,9 +16,6 @@
   export let hivePosition: Vector;
   export let flowerPosition: Vector;
 
-  $: angle = getDanceAngle(flowerPosition, hivePosition, sunPosition);
-  $: console.log('angle', toDegrees(angle));
-
   let w: number;
   let h: number;
 
@@ -48,6 +45,7 @@
     function animate(t: number) {
       ctx.clearRect(0, 0, canvas.width / 2, canvas.height / 2);
       canvas.width = w;
+      let angle = getDanceAngle(flowerPosition, hivePosition, sunPosition);
 
       ctx.save();
       ctx.fillStyle = 'yellow';
