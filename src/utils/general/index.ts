@@ -94,3 +94,18 @@ export const getDistance = (pointA: Vector, pointB: Vector): number => {
   const dy = pointA.y - pointB.y;
   return Math.sqrt(dx * dx + dy * dy);
 };
+
+export const getAngleWedge = (
+  pointA: Vector,
+  pointB: Vector,
+  pointC: Vector
+): [angle1: number, angle2: number] => {
+  const dx1 = pointA.x - pointB.x;
+  const dy1 = pointA.y - pointB.y;
+  const dx2 = pointC.x - pointB.x;
+  const dy2 = pointC.y - pointB.y;
+  const angle1 = Math.atan2(dy1, dx1);
+  const angle2 = Math.atan2(dy2, dx2);
+  const line = findLine(pointC, pointB);
+  return crossesLine(pointA, line) ? [angle2, angle1] : [angle1, angle2];
+};
