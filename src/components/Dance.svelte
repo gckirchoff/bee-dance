@@ -2,10 +2,8 @@
   import { afterUpdate, onMount } from 'svelte';
   import {
     average,
-    findAngle,
     getDanceAngle,
     getDistance,
-    toDegrees,
     toRadians,
     scale,
   } from '../utils/general';
@@ -19,11 +17,13 @@
   export let flowerPosition: Vector;
 
   export let maxDistanceFromHive: number;
+  export let showAngle = false;
 
   let w: number;
   let h: number;
 
   // Maybe have $: angle calculated here
+  $: angle = getDanceAngle(flowerPosition, hivePosition, sunPosition);
 
   // Or maybe calculate angle and flowerDistance in animate function
   $: flowerDistance = getDistance(hivePosition, flowerPosition);
@@ -39,7 +39,8 @@
     canvas.height = h;
     const ctx = canvas.getContext('2d');
 
-    const flower = new Flower(new Vector(0, h * -0.36), w, h);
+    const flowerYOffset = h * -0.36;
+    const flower = new Flower(new Vector(0, flowerYOffset), w, h);
 
     const bee = new Image();
     bee.src = Bee;
@@ -52,18 +53,18 @@
     function animate(t: number) {
       ctx.clearRect(0, 0, canvas.width / 2, canvas.height / 2);
       canvas.width = w;
-      let angle = getDanceAngle(flowerPosition, hivePosition, sunPosition);
+      const sizeScale = average([w, h]);
+      const sunYOffset = h * 0.1;
 
       ctx.save();
       ctx.fillStyle = 'yellow';
-      ctx.translate(w * 0.5, h * 0.1);
+      ctx.translate(w * 0.5, sunYOffset);
       ctx.beginPath();
-      ctx.arc(0, 0, h * 0.05, 0, Math.PI * 2);
+      ctx.arc(0, 0, sizeScale * 0.05, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
 
       ctx.fillStyle = 'green';
-      const sizeScale = average([w, h]);
       const danceLineWidth = sizeScale * 0.02;
 
       const danceDistanceScale = scale({
@@ -98,6 +99,41 @@
       ctx.drawImage(bee, -BEE_WIDTH / 2, -BEE_HEIGHT / 2);
 
       ctx.restore();
+
+      if (showAngle) {
+        ctx.save();
+        const sunVector = new Vector(w / 2, sunYOffset);
+        const centerVector = new Vector(w / 2, h / 2);
+
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = 'red';
+
+        ctx.translate(w / 2, 0);
+        ctx.beginPath();
+        ctx.moveTo(0, sunYOffset);
+        ctx.lineTo(0, h * 0.5);
+        ctx.stroke();
+
+        ctx.translate(0, h * 0.5);
+        ctx.beginPath();
+        ctx.strokeStyle = 'blue';
+        const flip = angle < 0;
+        ctx.arc(
+          0,
+          0,
+          sizeScale * 0.2,
+          toRadians(-90),
+          toRadians(-90) + angle,
+          flip
+        );
+        ctx.stroke();
+        ctx.rotate(angle);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(0, flowerYOffset);
+        ctx.stroke();
+        ctx.restore();
+      }
 
       animationFrame = requestAnimationFrame(animate);
     }
