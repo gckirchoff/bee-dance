@@ -36,7 +36,6 @@
 
     handleCanvasClick = (e) => {
       const clickLocation = new Vector(e.x, e.y);
-      console.log('click', clickLocation);
       if (!field.isInField(clickLocation)) {
         return;
       }
