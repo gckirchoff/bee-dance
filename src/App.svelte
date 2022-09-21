@@ -7,6 +7,7 @@
   import { minsToTime } from './utils/general';
 
   let timeInMins = 720;
+  let showAngle = false;
 
   let sunPosition: Vector;
   let hivePosition: Vector;
@@ -38,6 +39,7 @@
     <div class="canvas-container left">
       <Field
         {timeInMins}
+        {showAngle}
         {updateSunPosition}
         {updateHivePosition}
         {updateFlowerPosition}
@@ -48,6 +50,7 @@
       {#if flowerPosition && hivePosition && sunPosition}
         <Dance
           {sunPosition}
+          {showAngle}
           {hivePosition}
           {flowerPosition}
           {maxDistanceFromHive}
@@ -67,6 +70,10 @@
           showTooltip={false}
           id="time-input"
         />
+      </div>
+      <div>
+        <label class="show-angle-label" for="show-angle">Show angle</label>
+        <input type="checkbox" id="show-angle" bind:checked={showAngle} />
       </div>
     </div>
   </section>
@@ -90,16 +97,21 @@
   }
 
   .inputs-container {
-    display: flex;
+    /* display: flex; */
   }
 
   .time-input-container {
     display: flex;
-    flex: 0 1 50%;
+    width: 50%;
   }
 
   .canvas-container {
     flex: 1 1 0;
+  }
+
+  #show-angle,
+  .show-angle-label {
+    cursor: pointer;
   }
 
   .left {
