@@ -4,8 +4,10 @@
     average,
     findAngle,
     getDanceAngle,
+    getDistance,
     toDegrees,
     toRadians,
+    scale,
   } from '../utils/general';
   import { BEE_WIDTH, BEE_HEIGHT } from '../constants';
   import Bee from '../assets/bee.svg';
@@ -16,10 +18,15 @@
   export let hivePosition: Vector;
   export let flowerPosition: Vector;
 
+  export let maxDistanceFromHive: number;
+
   let w: number;
   let h: number;
 
-  let y = 0;
+  // Maybe have $: angle calculated here
+
+  // Or maybe calculate angle and flowerDistance in animate function
+  $: flowerDistance = getDistance(hivePosition, flowerPosition);
 
   let canvas: HTMLCanvasElement;
 
@@ -56,15 +63,20 @@
       ctx.restore();
 
       ctx.fillStyle = 'green';
-      const scale = average([w, h]);
-      const danceLineWidth = scale * 0.02;
+      const sizeScale = average([w, h]);
+      const danceLineWidth = sizeScale * 0.02;
 
-      // Draw bee path
+      const danceDistanceScale = scale({
+        num: flowerDistance,
+        inRange: [0, maxDistanceFromHive],
+        outRange: [0.6, 1],
+      });
       ctx.save();
       ctx.fillStyle = 'grey';
       ctx.strokeStyle = 'grey';
       ctx.lineWidth = danceLineWidth;
       ctx.translate(w * 0.5, h * 0.5);
+      ctx.scale(danceDistanceScale, danceDistanceScale); // flower distance scale
       ctx.rotate(angle);
       ctx.fillRect(danceLineWidth * -0.5, h * -0.3, danceLineWidth, h * 0.6);
       ctx.beginPath();
@@ -75,11 +87,16 @@
       ctx.arc(0, 0, h * 0.2915, toRadians(90), toRadians(270), danceRight);
       ctx.stroke();
 
+      ctx.save();
+      ctx.scale(1 / danceDistanceScale, 1 / danceDistanceScale); // reset flower distance scale
       flower.draw(ctx, -angle);
+      ctx.restore();
 
       ctx.translate(0, h * 0.3);
-      ctx.scale(scale * 0.0004, scale * 0.0004);
+      ctx.scale(1 / danceDistanceScale, 1 / danceDistanceScale); // reset flower distance scale
+      ctx.scale(sizeScale * 0.0004, sizeScale * 0.0004);
       ctx.drawImage(bee, -BEE_WIDTH / 2, -BEE_HEIGHT / 2);
+
       ctx.restore();
 
       animationFrame = requestAnimationFrame(animate);

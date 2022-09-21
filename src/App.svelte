@@ -12,6 +12,8 @@
   let hivePosition: Vector;
   let flowerPosition: Vector;
 
+  let maxDistanceFromHive: number;
+
   const updateSunPosition = (position: Vector): void => {
     sunPosition = position;
   };
@@ -20,6 +22,10 @@
   };
   const updateFlowerPosition = (position: Vector): void => {
     flowerPosition = position;
+  };
+
+  const updateMaxDistanceFromHive = (distance: number): void => {
+    maxDistanceFromHive = distance;
   };
 
   const updateTime = ({ detail: { value } }) => {
@@ -35,11 +41,17 @@
         {updateSunPosition}
         {updateHivePosition}
         {updateFlowerPosition}
+        {updateMaxDistanceFromHive}
       />
     </div>
     <div class="canvas-container right">
       {#if flowerPosition && hivePosition && sunPosition}
-        <Dance {sunPosition} {hivePosition} {flowerPosition} />
+        <Dance
+          {sunPosition}
+          {hivePosition}
+          {flowerPosition}
+          {maxDistanceFromHive}
+        />
       {/if}
     </div>
   </section>

@@ -10,6 +10,7 @@
   export let updateSunPosition: (position: Vector) => void;
   export let updateHivePosition: (position: Vector) => void;
   export let updateFlowerPosition: (position: Vector) => void;
+  export let updateMaxDistanceFromHive: (distance: number) => void;
 
   let w: number;
   let h: number;
@@ -28,6 +29,7 @@
     const field = new Field(w, h);
     const beehive = new Beehive(w, h);
     updateHivePosition(beehive.getPosition());
+    updateMaxDistanceFromHive(field.getMaxDistanceFromHive());
 
     const centerOfEarth = field.getCenterOfEarth();
     const sun = new Sun(w, h, centerOfEarth);
