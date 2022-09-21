@@ -1,3 +1,4 @@
+import { average } from '../../general';
 import { Flower } from './Flower';
 import { Vector } from './Vector';
 
@@ -8,6 +9,7 @@ export class Field {
   private radius: number;
   private center: Vector;
   private grass: Vector[];
+  private maxDistanceFromHive: number;
 
   private fieldColor = '#228C22';
   private grassColor = 'green';
@@ -16,9 +18,14 @@ export class Field {
     this.w = w;
     this.h = h;
 
-    this.radius = w * 1.5;
-    this.center = new Vector(w / 2, h + w * 0.95);
+    const dimensionScale = average([w, h]);
+    this.radius = dimensionScale * 1.439888;
+    const transformX = w / 2;
+    const transformY = h + dimensionScale;
+    this.center = new Vector(transformX, transformY);
     this.grass = this.generateGrass(400);
+    const topEdgeOfField = transformY - this.radius;
+    this.maxDistanceFromHive = h - topEdgeOfField;
   }
 
   draw = (ctx: CanvasRenderingContext2D) => {
@@ -35,6 +42,8 @@ export class Field {
   };
 
   getCenterOfEarth = (): Vector => this.center;
+
+  getMaxDistanceFromHive = (): number => this.maxDistanceFromHive;
 
   isInField = ({ x, y }: Vector) =>
     Math.pow(x - this.center.x, 2) + Math.pow(y - this.center.y, 2) <
