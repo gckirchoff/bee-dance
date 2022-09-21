@@ -18,10 +18,11 @@ export class Flower {
     this.numOfPetals = 5;
   }
 
-  draw = (ctx: CanvasRenderingContext2D): void => {
+  draw = (ctx: CanvasRenderingContext2D, rotate = 0): void => {
     ctx.save();
     const { x: flowerX, y: flowerY } = this.flowerLocation;
     ctx.translate(flowerX, flowerY);
+    ctx.rotate(rotate);
 
     const scale = average([this.w, this.h]);
     const stemWidth = scale * 0.005;

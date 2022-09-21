@@ -9,7 +9,8 @@
   } from '../utils/general';
   import { BEE_WIDTH, BEE_HEIGHT } from '../constants';
   import Bee from '../assets/bee.svg';
-  import type { Vector } from '../utils/draw/agents/Vector';
+  import { Vector } from '../utils/draw/agents/Vector';
+  import { Flower } from '../utils/draw/agents/Flower';
 
   export let sunPosition: Vector;
   export let hivePosition: Vector;
@@ -34,6 +35,8 @@
     canvas.height = h;
     const ctx = canvas.getContext('2d');
 
+    const flower = new Flower(new Vector(0, h * -0.36), w, h);
+
     const bee = new Image();
     bee.src = Bee;
 
@@ -46,13 +49,13 @@
       ctx.clearRect(0, 0, canvas.width / 2, canvas.height / 2);
       canvas.width = w;
 
-      // ctx.save();
-      // ctx.fillStyle = 'yellow';
-      // ctx.translate(w * 0.5, h * 0.1);
-      // ctx.beginPath();
-      // ctx.arc(0, 0, this.h * 0.05, 0, Math.PI * 2);
-      // ctx.fill();
-      // ctx.restore();
+      ctx.save();
+      ctx.fillStyle = 'yellow';
+      ctx.translate(w * 0.5, h * 0.1);
+      ctx.beginPath();
+      ctx.arc(0, 0, h * 0.05, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
 
       ctx.fillStyle = 'green';
       const scale = average([w, h]);
@@ -73,6 +76,8 @@
       }
       ctx.arc(0, 0, h * 0.2915, toRadians(90), toRadians(270), danceRight);
       ctx.stroke();
+
+      flower.draw(ctx, -angle);
 
       ctx.translate(0, h * 0.3);
       ctx.scale(scale * 0.0004, scale * 0.0004);
