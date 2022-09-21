@@ -7,6 +7,10 @@
 
   export let timeInMins: number;
 
+  export let updateSunPosition: (position: Vector) => void;
+  export let updateHivePosition: (position: Vector) => void;
+  export let updateFlowerPosition: (position: Vector) => void;
+
   let w: number;
   let h: number;
 
@@ -23,16 +27,21 @@
 
     const field = new Field(w, h);
     const beehive = new Beehive(w, h);
+    updateHivePosition(beehive.getPosition());
 
     const centerOfEarth = field.getCenterOfEarth();
     const sun = new Sun(w, h, centerOfEarth);
 
+    let previousSunPosition: Vector;
+
     handleCanvasClick = (e) => {
       const clickLocation = new Vector(e.x, e.y);
+      console.log('click', clickLocation);
       if (!field.isInField(clickLocation)) {
         return;
       }
       flowerLocation = clickLocation;
+      updateFlowerPosition(flowerLocation);
     };
 
     let animationFrame = requestAnimationFrame(animate);
@@ -45,6 +54,16 @@
       }
       beehive.draw(ctx);
       sun.draw(timeInMins, ctx);
+
+      const sunPosition = sun.getPosition();
+      if (
+        !previousSunPosition ||
+        previousSunPosition.x !== sunPosition.x ||
+        previousSunPosition.y !== sunPosition.y
+      ) {
+        updateSunPosition(sunPosition);
+        previousSunPosition = sunPosition;
+      }
 
       animationFrame = requestAnimationFrame(animate);
     }

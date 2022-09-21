@@ -1,11 +1,14 @@
 import { scale, toRadians } from '../../general';
-import type { Vector } from './Vector';
+import { Vector } from './Vector';
 
 export class Sun {
   w: number;
   h: number;
   centerOfEarth: Vector;
   radius: number;
+
+  // Assigned in draw
+  position: Vector | undefined;
 
   constructor(w: number, h: number, centerOfEarth: Vector) {
     this.w = w;
@@ -25,6 +28,7 @@ export class Sun {
     );
     const sunX = this.radius * Math.cos(angle);
     const sunY = this.radius * Math.sin(angle);
+    this.position = new Vector(sunX, sunY);
     ctx.save();
     ctx.translate(centerX, centerY);
     ctx.fillStyle = 'yellow';
@@ -34,4 +38,16 @@ export class Sun {
     ctx.fill();
     ctx.restore();
   };
+
+  getPosition = () =>
+    new Vector(
+      this.position.x + this.centerOfEarth.x,
+      this.position.y + this.centerOfEarth.y
+    );
+
+  getCorrectedPosition = () =>
+    new Vector(
+      this.position.x + this.centerOfEarth.x,
+      this.position.y + this.centerOfEarth.y
+    );
 }

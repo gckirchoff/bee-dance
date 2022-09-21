@@ -1,8 +1,23 @@
 <script lang="ts">
   import { afterUpdate, onMount } from 'svelte';
-  import { average, toRadians } from '../utils/general';
+  import {
+    average,
+    findAngle,
+    getDanceAngle,
+    toDegrees,
+    toRadians,
+  } from '../utils/general';
   import { BEE_WIDTH, BEE_HEIGHT } from '../constants';
   import Bee from '../assets/bee.svg';
+  import type { Vector } from '../utils/draw/agents/Vector';
+
+  export let sunPosition: Vector;
+  export let hivePosition: Vector;
+  export let flowerPosition: Vector;
+
+  $: angle = getDanceAngle(flowerPosition, hivePosition, sunPosition);
+  $: console.log('angle', toDegrees(angle));
+
   let w: number;
   let h: number;
 
@@ -10,9 +25,9 @@
 
   let canvas: HTMLCanvasElement;
 
-  afterUpdate(() => {
-    console.log('iupdating');
-  });
+  // afterUpdate(() => {
+  //   console.log('iupdating');
+  // });
 
   onMount(() => {
     canvas.width = w;
@@ -30,6 +45,15 @@
     function animate(t: number) {
       ctx.clearRect(0, 0, canvas.width / 2, canvas.height / 2);
       canvas.width = w;
+
+      // ctx.save();
+      // ctx.fillStyle = 'yellow';
+      // ctx.translate(w * 0.5, h * 0.1);
+      // ctx.beginPath();
+      // ctx.arc(0, 0, this.h * 0.05, 0, Math.PI * 2);
+      // ctx.fill();
+      // ctx.restore();
+
       ctx.fillStyle = 'green';
       const scale = average([w, h]);
       const danceLineWidth = scale * 0.02;
@@ -40,6 +64,7 @@
       ctx.strokeStyle = 'grey';
       ctx.lineWidth = danceLineWidth;
       ctx.translate(w * 0.5, h * 0.5);
+      ctx.rotate(angle);
       ctx.fillRect(danceLineWidth * -0.5, h * -0.3, danceLineWidth, h * 0.6);
       ctx.beginPath();
       if (t > lastFlip + timeUntilFlip) {

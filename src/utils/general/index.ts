@@ -1,3 +1,5 @@
+import type { Vector } from '../draw/agents/Vector';
+
 enum Meridiem {
   AM = 'AM',
   PM = 'PM',
@@ -52,4 +54,21 @@ export const average = (arr: number[]): number => {
     sum += num;
   }
   return sum / arrLength;
+};
+
+export const findAngle = (A: Vector, B: Vector, C: Vector) => {
+  var AB = Math.sqrt(Math.pow(B.x - A.x, 2) + Math.pow(B.y - A.y, 2));
+  var BC = Math.sqrt(Math.pow(B.x - C.x, 2) + Math.pow(B.y - C.y, 2));
+  var AC = Math.sqrt(Math.pow(C.x - A.x, 2) + Math.pow(C.y - A.y, 2));
+  return Math.acos((BC * BC + AB * AB - AC * AC) / (2 * BC * AB));
+};
+
+export const getDanceAngle = (
+  flowerPosition: Vector,
+  hivePosition: Vector,
+  sunPosition: Vector
+): number => {
+  const angle = findAngle(flowerPosition, hivePosition, sunPosition);
+  const flip = sunPosition.x > flowerPosition.x ? -1 : 1;
+  return angle * flip;
 };

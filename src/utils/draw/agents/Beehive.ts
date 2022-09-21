@@ -13,6 +13,8 @@ export class Beehive {
     this.position = new Vector(w / 2, h);
   }
 
+  getPosition = () => this.position;
+
   draw = (ctx: CanvasRenderingContext2D): void => {
     ctx.save();
     const bottomWidth = this.w * 0.15;
