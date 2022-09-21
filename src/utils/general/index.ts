@@ -63,12 +63,25 @@ export const findAngle = (A: Vector, B: Vector, C: Vector) => {
   return Math.acos((BC * BC + AB * AB - AC * AC) / (2 * BC * AB));
 };
 
+const findLine = (pointA: Vector, pointB: Vector): { m: number; b: number } => {
+  const m = (pointB.y - pointA.y) / (pointB.x - pointA.x);
+  const b = pointA.y - m * pointA.x;
+  return { m, b };
+};
+
+const crossesLine = (point: Vector, line: { m: number; b: number }): boolean => {
+  const { m, b } = line;
+  const yHat = m * point.x + b;
+  return m < 0 ? point.y > yHat : point.y < yHat;
+};
+
 export const getDanceAngle = (
   flowerPosition: Vector,
   hivePosition: Vector,
   sunPosition: Vector
 ): number => {
   const angle = findAngle(flowerPosition, hivePosition, sunPosition);
-  const flip = sunPosition.x > flowerPosition.x ? -1 : 1;
+  const line = findLine(flowerPosition, hivePosition);
+  const flip = crossesLine(sunPosition, line) ? -1 : 1;
   return angle * flip;
 };
