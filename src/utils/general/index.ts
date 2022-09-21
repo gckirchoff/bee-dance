@@ -69,7 +69,10 @@ const findLine = (pointA: Vector, pointB: Vector): { m: number; b: number } => {
   return { m, b };
 };
 
-const crossesLine = (point: Vector, line: { m: number; b: number }): boolean => {
+const crossesLine = (
+  point: Vector,
+  line: { m: number; b: number }
+): boolean => {
   const { m, b } = line;
   const yHat = m * point.x + b;
   return m < 0 ? point.y > yHat : point.y < yHat;
@@ -84,4 +87,10 @@ export const getDanceAngle = (
   const line = findLine(flowerPosition, hivePosition);
   const flip = crossesLine(sunPosition, line) ? -1 : 1;
   return angle * flip;
+};
+
+export const getDistance = (pointA: Vector, pointB: Vector): number => {
+  const dx = pointA.x - pointB.x;
+  const dy = pointA.y - pointB.y;
+  return Math.sqrt(dx * dx + dy * dy);
 };
