@@ -7,6 +7,7 @@ export class Sun {
   centerOfEarth: Vector;
   radius: number;
   private sunRadius: number;
+  private dimensionScale: number;
 
   // Assigned in draw
   position: Vector | undefined;
@@ -16,6 +17,7 @@ export class Sun {
     this.h = h;
     this.centerOfEarth = centerOfEarth;
     const dimensionScale = average([w, h]);
+    this.dimensionScale = dimensionScale;
     this.radius = dimensionScale * 1.67;
     this.sunRadius = dimensionScale * 0.05;
   }
@@ -38,6 +40,19 @@ export class Sun {
     ctx.translate(sunX, sunY);
     ctx.beginPath();
     ctx.arc(0, 0, this.sunRadius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  };
+
+  drawOnDanceFloor = (
+    sunYOffset: number,
+    ctx: CanvasRenderingContext2D
+  ): void => {
+    ctx.save();
+    ctx.fillStyle = 'yellow';
+    ctx.translate(this.w * 0.5, sunYOffset);
+    ctx.beginPath();
+    ctx.arc(0, 0, this.dimensionScale * 0.05, 0, Math.PI * 2);
     ctx.fill();
     ctx.restore();
   };

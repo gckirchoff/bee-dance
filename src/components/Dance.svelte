@@ -12,6 +12,7 @@
   import { Vector } from '../utils/draw/agents/Vector';
   import { Flower } from '../utils/draw/agents/Flower';
   import { Angle } from '../utils/draw/agents/Angle';
+  import { Sun } from '../utils/draw/agents/Sun';
 
   export let sunPosition: Vector;
   export let hivePosition: Vector;
@@ -43,6 +44,7 @@
     const flowerYOffset = h * -0.36;
     const flower = new Flower(new Vector(0, flowerYOffset), w, h);
     const angleAgent = new Angle(w, h);
+    const sun = new Sun(w, h, new Vector(0, 0));
 
     const bee = new Image();
     bee.src = Bee;
@@ -58,13 +60,7 @@
       const sizeScale = average([w, h]);
       const sunYOffset = h * 0.1;
 
-      ctx.save();
-      ctx.fillStyle = 'yellow';
-      ctx.translate(w * 0.5, sunYOffset);
-      ctx.beginPath();
-      ctx.arc(0, 0, sizeScale * 0.05, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
+      sun.drawOnDanceFloor(sunYOffset, ctx);
 
       ctx.fillStyle = 'green';
       const danceLineWidth = sizeScale * 0.02;
