@@ -13,6 +13,7 @@
     getAngleWedge,
     getDistance,
   } from '../utils/general';
+  import { Angle } from '../utils/draw/agents/Angle';
 
   export let timeInMins: number;
   export let showAngle = false;
@@ -41,6 +42,7 @@
     const dimensionScale = average([w, h]);
     const field = new Field(w, h);
     const beehive = new Beehive(w, h);
+    const angle = new Angle(w, h);
     hivePosition = beehive.getPosition();
     updateHivePosition(hivePosition);
     updateMaxDistanceFromHive(field.getMaxDistanceFromHive());
@@ -73,38 +75,7 @@
       beehive.draw(ctx);
 
       if (showAngle && flowerLocation) {
-        const [angle1, angle2] = getAngleWedge(
-          sunPosition,
-          hivePosition,
-          flowerLocation
-        );
-
-        ctx.save();
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = 'red';
-
-        ctx.beginPath();
-        ctx.moveTo(sunPosition.x, sunPosition.y);
-        ctx.lineTo(hivePosition.x, hivePosition.y);
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.strokeStyle = 'blue';
-        ctx.moveTo(hivePosition.x, hivePosition.y);
-        ctx.lineTo(flowerLocation.x, flowerLocation.y);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.translate(hivePosition.x, hivePosition.y);
-        const flowerDistance = getDistance(hivePosition, flowerLocation);
-        ctx.arc(
-          0,
-          0,
-          Math.min(dimensionScale * 0.2, flowerDistance),
-          angle1,
-          angle2
-        );
-        ctx.stroke();
-        ctx.restore();
+        angle.drawOnField(sunPosition, hivePosition, flowerLocation, ctx);
       }
 
       if (

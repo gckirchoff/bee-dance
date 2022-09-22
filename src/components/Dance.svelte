@@ -11,6 +11,7 @@
   import Bee from '../assets/bee.svg';
   import { Vector } from '../utils/draw/agents/Vector';
   import { Flower } from '../utils/draw/agents/Flower';
+  import { Angle } from '../utils/draw/agents/Angle';
 
   export let sunPosition: Vector;
   export let hivePosition: Vector;
@@ -41,6 +42,7 @@
 
     const flowerYOffset = h * -0.36;
     const flower = new Flower(new Vector(0, flowerYOffset), w, h);
+    const angleAgent = new Angle(w, h);
 
     const bee = new Image();
     bee.src = Bee;
@@ -101,38 +103,7 @@
       ctx.restore();
 
       if (showAngle) {
-        ctx.save();
-        const sunVector = new Vector(w / 2, sunYOffset);
-        const centerVector = new Vector(w / 2, h / 2);
-
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = 'red';
-
-        ctx.translate(w / 2, 0);
-        ctx.beginPath();
-        ctx.moveTo(0, sunYOffset);
-        ctx.lineTo(0, h * 0.5);
-        ctx.stroke();
-
-        ctx.translate(0, h * 0.5);
-        ctx.beginPath();
-        ctx.strokeStyle = 'blue';
-        const flip = angle < 0;
-        ctx.arc(
-          0,
-          0,
-          sizeScale * 0.2,
-          toRadians(-90),
-          toRadians(-90) + angle,
-          flip
-        );
-        ctx.stroke();
-        ctx.rotate(angle);
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.lineTo(0, flowerYOffset);
-        ctx.stroke();
-        ctx.restore();
+        angleAgent.drawOnDanceFloor(angle, sunYOffset, flowerYOffset, ctx);
       }
 
       animationFrame = requestAnimationFrame(animate);
