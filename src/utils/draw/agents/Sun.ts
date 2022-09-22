@@ -26,7 +26,7 @@ export class Sun {
       scale({
         num: timeInMins,
         inRange: [360, 1080],
-        outRange: [255, 285],
+        outRange: [250, 290],
       })
     );
     const sunX = this.radius * Math.cos(angle);
