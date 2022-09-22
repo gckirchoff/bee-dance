@@ -194,7 +194,9 @@
         on:touchstart={onDragStart}
         on:mousedown={onDragStart}
         on:mouseover={() => (thumbHover = true)}
+        on:focus={() => (thumbHover = true)}
         on:mouseout={() => (thumbHover = false)}
+        on:blur={() => (thumbHover = false)}
       >
         {#if showTooltip && (holding || thumbHover)}
           <div
