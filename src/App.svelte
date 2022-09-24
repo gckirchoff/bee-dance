@@ -2,6 +2,7 @@
   import Canvas from './components/Canvas.svelte';
   import Dance from './components/Dance.svelte';
   import Field from './components/Field.svelte';
+  import Description from './components/Description.svelte';
   import Range from './components/Range.svelte';
   import type { Vector } from './utils/draw/agents/Vector';
   import { minsToTime } from './utils/general';
@@ -55,6 +56,8 @@
           {flowerPosition}
           {maxDistanceFromHive}
         />
+      {:else}
+        <Description />
       {/if}
     </div>
   </section>
