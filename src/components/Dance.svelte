@@ -62,7 +62,6 @@
 
       sun.drawOnDanceFloor(sunYOffset, ctx);
 
-      ctx.fillStyle = 'green';
       const danceLineWidth = sizeScale * 0.02;
 
       const danceDistanceScale = scale({
