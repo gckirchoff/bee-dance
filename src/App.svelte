@@ -97,15 +97,21 @@
   .lower {
     background-color: green;
     height: 20vh;
+    padding: 1% 1%;
   }
 
   .inputs-container {
     /* display: flex; */
   }
 
+  label {
+    color: rgb(230, 230, 230);
+  }
+
   .time-input-container {
     display: flex;
     width: 50%;
+    margin-bottom: 1rem;
   }
 
   .canvas-container {
