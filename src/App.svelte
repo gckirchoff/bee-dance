@@ -78,12 +78,22 @@
       </div>
       <div class="check-boxes-container">
         <div class="check-box-container">
-          <label class="show-angle-label" for="show-angle">Show angle</label>
-          <input type="checkbox" id="show-angle" bind:checked={showAngle} />
+          <label class="cursor-pointer" for="show-angle">Show angle</label>
+          <input
+            type="checkbox"
+            class="cursor-pointer"
+            id="show-angle"
+            bind:checked={showAngle}
+          />
         </div>
         <div class="check-box-container">
-          <label class="show-angle-label" for="animate-bee">Animate Bee</label>
-          <input type="checkbox" id="animate-bee" bind:checked={animateBee} />
+          <label class="cursor-pointer" for="animate-bee">Animate Bee</label>
+          <input
+            type="checkbox"
+            class="cursor-pointer"
+            id="animate-bee"
+            bind:checked={animateBee}
+          />
         </div>
       </div>
     </div>
@@ -135,8 +145,7 @@
     justify-content: space-between;
   }
 
-  #show-angle,
-  .show-angle-label {
+  .cursor-pointer {
     cursor: pointer;
   }
 
