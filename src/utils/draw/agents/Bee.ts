@@ -17,7 +17,6 @@ export class BeeAgent {
   private waggleMin = 1000;
   private waggleMax = 3000;
   private waggleAngle = toRadians(3);
-  private waggleRPM = 10;
 
   // Updated in this.updateBeePosition()
   private timeUntilFlip = 0;
