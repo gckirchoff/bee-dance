@@ -4,7 +4,7 @@ import BeeSVG from '../../../assets/bee.svg';
 import { Flower } from './Flower';
 import { Vector } from './Vector';
 
-export class Bee {
+export class BeeAgent {
   private w: number;
   private h: number;
   private sizeScale: number;
@@ -81,4 +81,12 @@ export class Bee {
 
     ctx.restore();
   };
+
+  updateBeePosition = (flowerDistance: number) => {
+    const danceDistanceScale = scale({
+      num: flowerDistance,
+      inRange: [0, this.maxDistanceFromHive],
+      outRange: [1, 3],
+    });
+  }
 }

@@ -13,6 +13,7 @@
   import { Flower } from '../utils/draw/agents/Flower';
   import { Angle } from '../utils/draw/agents/Angle';
   import { Sun } from '../utils/draw/agents/Sun';
+  import { BeeAgent } from '../utils/draw/agents/Bee';
 
   export let sunPosition: Vector;
   export let hivePosition: Vector;
@@ -53,6 +54,8 @@
     let timeUntilFlip = 4000;
     let lastFlip = 0;
 
+    const beeAgent = new BeeAgent(w, h, maxDistanceFromHive);
+
     let animationFrame = requestAnimationFrame(animate);
     function animate(t: number) {
       ctx.clearRect(0, 0, canvas.width / 2, canvas.height / 2);
@@ -69,33 +72,8 @@
         inRange: [0, maxDistanceFromHive],
         outRange: [0.6, 1],
       });
-      ctx.save();
-      ctx.fillStyle = 'grey';
-      ctx.strokeStyle = 'grey';
-      ctx.lineWidth = danceLineWidth;
-      ctx.translate(w * 0.5, h * 0.5);
-      ctx.scale(danceDistanceScale, danceDistanceScale); // flower distance scale
-      ctx.rotate(angle);
-      ctx.fillRect(danceLineWidth * -0.5, h * -0.3, danceLineWidth, h * 0.6);
-      ctx.beginPath();
-      if (t > lastFlip + timeUntilFlip) {
-        danceRight = !danceRight;
-        lastFlip = t;
-      }
-      ctx.arc(0, 0, h * 0.2915, toRadians(90), toRadians(270), danceRight);
-      ctx.stroke();
 
-      ctx.save();
-      ctx.scale(1 / danceDistanceScale, 1 / danceDistanceScale); // reset flower distance scale
-      flower.draw(ctx, -angle);
-      ctx.restore();
-
-      ctx.translate(0, h * 0.3);
-      ctx.scale(1 / danceDistanceScale, 1 / danceDistanceScale); // reset flower distance scale
-      ctx.scale(sizeScale * 0.0004, sizeScale * 0.0004);
-      ctx.drawImage(bee, -BEE_WIDTH / 2, -BEE_HEIGHT / 2);
-
-      ctx.restore();
+      beeAgent.draw(t, angle, flowerDistance, ctx);
 
       if (showAngle) {
         angleAgent.drawOnDanceFloor(angle, sunYOffset, flowerYOffset, ctx);
