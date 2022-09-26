@@ -74,9 +74,15 @@
           id="time-input"
         />
       </div>
-      <div>
-        <label class="show-angle-label" for="show-angle">Show angle</label>
-        <input type="checkbox" id="show-angle" bind:checked={showAngle} />
+      <div class="check-boxes-container">
+        <div class="check-box-container">
+          <label class="show-angle-label" for="show-angle">Show angle</label>
+          <input type="checkbox" id="show-angle" bind:checked={showAngle} />
+        </div>
+        <div class="check-box-container">
+          <label class="show-angle-label" for="animate-bee">Animate Bee</label>
+          <input type="checkbox" id="animate-bee" bind:checked={showAngle} />
+        </div>
       </div>
     </div>
   </section>
@@ -116,6 +122,15 @@
 
   .canvas-container {
     flex: 1 1 0;
+  }
+
+  .check-boxes-container {
+    width: max(10%, 7rem)
+  }
+
+  .check-box-container {
+    display: flex;
+    justify-content: space-between;
   }
 
   #show-angle,
