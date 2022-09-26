@@ -104,6 +104,8 @@ export class BeeAgent {
     if (t > this.lastFlip + this.timeUntilFlip) {
       this.danceRight = !this.danceRight;
       this.lastFlip = t;
+      this.y = 0;
+      this.x = 0;
     }
 
     const timeInCircuit = t - this.lastFlip;
