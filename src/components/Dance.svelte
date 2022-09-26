@@ -73,7 +73,8 @@
         outRange: [0.6, 1],
       });
 
-      beeAgent.draw(t, angle, flowerDistance, ctx);
+      beeAgent.updateBeePosition(t, flowerDistance);
+      beeAgent.draw(angle, ctx);
 
       if (showAngle) {
         angleAgent.drawOnDanceFloor(angle, sunYOffset, flowerYOffset, ctx);

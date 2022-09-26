@@ -13,9 +13,22 @@ export class BeeAgent {
   private flower: Flower;
   private flowerYOffset: number;
 
-  private timeUntilFlip = 4000;
+  // constants
+  private waggleMin = 1000;
+  private waggleMax = 3000;
+  private waggleAngle = toRadians(3);
+  private waggleRPM = 10;
+
+  // Updated in this.updateBeePosition()
+  private timeUntilFlip = 0;
+  private roundDuration = 1000;
   private lastFlip = 0;
   private danceRight = false;
+
+  private x = 0;
+  private xIncrement = 0;
+  private y = 0;
+  private yIncrement = 0;
 
   constructor(w: number, h: number, maxDistanceFromHive: number) {
     this.w = w;
@@ -28,19 +41,15 @@ export class BeeAgent {
     this.flowerYOffset = h * -0.36;
     this.flower = new Flower(new Vector(0, this.flowerYOffset), w, h);
   }
-  draw = (
-    t: number,
-    angle: number,
-    flowerDistance: number,
-    ctx: CanvasRenderingContext2D
-  ): void => {
+  draw = (angle: number, ctx: CanvasRenderingContext2D): void => {
     const danceLineWidth = this.sizeScale * 0.02;
 
-    const danceDistanceScale = scale({
-      num: flowerDistance,
-      inRange: [0, this.maxDistanceFromHive],
-      outRange: [0.6, 1],
-    });
+    // const danceDistanceScale = scale({
+    //   num: flowerDistance,
+    //   inRange: [0, this.maxDistanceFromHive],
+    //   outRange: [0.6, 1],
+    // });
+    const danceDistanceScale = 1;
     ctx.save();
     ctx.fillStyle = 'grey';
     ctx.strokeStyle = 'grey';
@@ -55,10 +64,6 @@ export class BeeAgent {
       this.h * 0.6
     );
     ctx.beginPath();
-    if (t > this.lastFlip + this.timeUntilFlip) {
-      this.danceRight = !this.danceRight;
-      this.lastFlip = t;
-    }
     ctx.arc(
       0,
       0,
@@ -76,17 +81,51 @@ export class BeeAgent {
 
     ctx.translate(0, this.h * 0.3);
     ctx.scale(1 / danceDistanceScale, 1 / danceDistanceScale); // reset flower distance scale
+    this.applyBeeTransforms(ctx);
     ctx.scale(this.sizeScale * 0.0004, this.sizeScale * 0.0004);
     ctx.drawImage(this.bee, -BEE_WIDTH / 2, -BEE_HEIGHT / 2);
 
     ctx.restore();
   };
 
-  updateBeePosition = (flowerDistance: number) => {
-    const danceDistanceScale = scale({
+  updateBeePosition = (t: number, flowerDistance: number) => {
+    const wagglePortionDuration = scale({
       num: flowerDistance,
       inRange: [0, this.maxDistanceFromHive],
-      outRange: [1, 3],
+      outRange: [1000, 3000],
     });
-  }
+
+    if (this.lastFlip === 0) {
+      this.lastFlip = t;
+    }
+
+    this.timeUntilFlip = this.roundDuration + wagglePortionDuration;
+
+    if (t > this.lastFlip + this.timeUntilFlip) {
+      this.danceRight = !this.danceRight;
+      this.lastFlip = t;
+    }
+
+    const timeInCircuit = t - this.lastFlip;
+    const inWaggle = timeInCircuit <= wagglePortionDuration;
+
+    if (inWaggle) {
+      const distanceToCover = this.h * 0.6;
+      this.yIncrement = distanceToCover / (wagglePortionDuration / 16.3);
+      this.y -= this.yIncrement;
+
+      this.updateWaggleAngle();
+    }
+  };
+
+  private applyBeeTransforms = (ctx: CanvasRenderingContext2D) => {
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.waggleAngle);
+  };
+
+  private updateWaggleAngle = () => {
+    if (Math.random() > 0.3) {
+      this.waggleAngle = -this.waggleAngle;
+    }
+  };
 }
