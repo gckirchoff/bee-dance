@@ -9,6 +9,7 @@
 
   let timeInMins = 720;
   let showAngle = false;
+  let animateBee = false;
 
   let sunPosition: Vector;
   let hivePosition: Vector;
@@ -51,10 +52,11 @@
       {#if flowerPosition && hivePosition && sunPosition}
         <Dance
           {sunPosition}
-          {showAngle}
           {hivePosition}
           {flowerPosition}
           {maxDistanceFromHive}
+          {showAngle}
+          {animateBee}
         />
       {:else}
         <Description />
@@ -81,7 +83,7 @@
         </div>
         <div class="check-box-container">
           <label class="show-angle-label" for="animate-bee">Animate Bee</label>
-          <input type="checkbox" id="animate-bee" bind:checked={showAngle} />
+          <input type="checkbox" id="animate-bee" bind:checked={animateBee} />
         </div>
       </div>
     </div>
@@ -125,7 +127,7 @@
   }
 
   .check-boxes-container {
-    width: max(10%, 7rem)
+    width: max(10%, 7rem);
   }
 
   .check-box-container {

@@ -102,9 +102,7 @@ export class BeeAgent {
     }
 
     if (this.previousFlowerDistance !== flowerDistance) {
-      this.x = 0;
-      this.y = 0;
-      this.lastFlip = t;
+      this.resetBeePosition(t);
       this.previousFlowerDistance = flowerDistance;
     }
 
@@ -112,9 +110,7 @@ export class BeeAgent {
 
     if (t > this.lastFlip + this.timeUntilFlip) {
       this.danceRight = !this.danceRight;
-      this.lastFlip = t;
-      this.y = 0;
-      this.x = 0;
+      this.resetBeePosition(t);
     }
 
     const timeInCircuit = t - this.lastFlip;
@@ -126,6 +122,14 @@ export class BeeAgent {
       this.y -= this.yIncrement;
 
       this.updateWaggleAngle();
+    }
+  };
+
+  resetBeePosition = (newLastFlipTime?: number) => {
+    this.x = 0;
+    this.y = 0;
+    if (newLastFlipTime) {
+      this.lastFlip = newLastFlipTime;
     }
   };
 
