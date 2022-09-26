@@ -24,6 +24,7 @@ export class BeeAgent {
   private roundDuration = 1000;
   private lastFlip = 0;
   private danceRight = false;
+  private previousFlowerDistance = 0;
 
   private x = 0;
   private xIncrement = 0;
@@ -97,6 +98,14 @@ export class BeeAgent {
 
     if (this.lastFlip === 0) {
       this.lastFlip = t;
+      this.previousFlowerDistance = flowerDistance;
+    }
+
+    if (this.previousFlowerDistance !== flowerDistance) {
+      this.x = 0;
+      this.y = 0;
+      this.lastFlip = t;
+      this.previousFlowerDistance = flowerDistance;
     }
 
     this.timeUntilFlip = this.roundDuration + wagglePortionDuration;
