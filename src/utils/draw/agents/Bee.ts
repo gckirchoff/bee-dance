@@ -117,8 +117,14 @@ export class BeeAgent {
 
     if (inWaggle) {
       const distanceToCover = this.h * 0.6;
-      this.yIncrement = distanceToCover / (wagglePortionDuration / 16.3);
-      this.y -= this.yIncrement;
+      const percentThroughWaggle =
+        (timeInCircuit / wagglePortionDuration) * 100;
+      this.y =
+        scale({
+          num: percentThroughWaggle,
+          inRange: [0, 100],
+          outRange: [0, distanceToCover],
+        }) * -1;
 
       this.updateWaggleAngle();
     }
