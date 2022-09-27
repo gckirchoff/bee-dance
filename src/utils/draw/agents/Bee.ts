@@ -1,8 +1,13 @@
-import { average, scale, toRadians } from '../../general';
+import { average, scale, toDegrees, toRadians } from '../../general';
 import { BEE_WIDTH, BEE_HEIGHT } from '../../../constants';
 import BeeSVG from '../../../assets/bee.svg';
 import { Flower } from './Flower';
 import { Vector } from './Vector';
+
+enum DanceStage {
+  WAGGLE = 'waggle',
+  ROUND = 'round',
+}
 
 export class BeeAgent {
   private w: number;
@@ -20,15 +25,15 @@ export class BeeAgent {
 
   // Updated in this.updateBeePosition()
   private timeUntilFlip = 0;
-  private roundDuration = 1000;
+  private roundDuration = 2000;
   private lastFlip = 0;
   private danceRight = false;
   private previousFlowerDistance = 0;
+  private danceStage = DanceStage.WAGGLE;
 
   private x = 0;
-  private xIncrement = 0;
   private y = 0;
-  private yIncrement = 0;
+  private beeAngle = 0;
 
   constructor(w: number, h: number, maxDistanceFromHive: number) {
     this.w = w;
@@ -116,6 +121,7 @@ export class BeeAgent {
     const inWaggle = timeInCircuit <= wagglePortionDuration;
 
     if (inWaggle) {
+      this.danceStage = DanceStage.WAGGLE;
       const distanceToCover = this.h * 0.6;
       const percentThroughWaggle =
         (timeInCircuit / wagglePortionDuration) * 100;
@@ -127,12 +133,28 @@ export class BeeAgent {
         }) * -1;
 
       this.updateWaggleAngle();
+    } else {
+      this.danceStage = DanceStage.ROUND;
+      const percentThroughRound = ((timeInCircuit - wagglePortionDuration) / this.roundDuration) * 100;
+      const radius = this.h * 0.3;
+      const angle =
+        scale({
+          num: percentThroughRound,
+          inRange: [0, 100],
+          outRange: [0, Math.PI],
+        }) + toRadians(this.danceRight ? -90 : 90);
+      const flip = this.danceRight ? 1 : -1;
+      this.x = radius * Math.cos(angle * flip);
+      this.y = radius * Math.sin(angle * flip) - this.h * 0.3;
+      this.beeAngle = angle * flip + toRadians(180);
+      this.beeAngle = this.danceRight ? angle + toRadians(180) : angle * flip;
     }
   };
 
   resetBeePosition = (newLastFlipTime?: number) => {
     this.x = 0;
     this.y = 0;
+    this.beeAngle = 0;
     if (newLastFlipTime) {
       this.lastFlip = newLastFlipTime;
     }
@@ -140,7 +162,11 @@ export class BeeAgent {
 
   private applyBeeTransforms = (ctx: CanvasRenderingContext2D) => {
     ctx.translate(this.x, this.y);
-    ctx.rotate(this.waggleAngle);
+    if (this.danceStage === DanceStage.WAGGLE) {
+      ctx.rotate(this.waggleAngle);
+    } else if (this.danceStage === DanceStage.ROUND) {
+      ctx.rotate(this.beeAngle);
+    }
   };
 
   private updateWaggleAngle = () => {
