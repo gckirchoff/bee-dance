@@ -7,6 +7,7 @@
   import type { Vector } from './utils/draw/agents/Vector';
   import { minsToTime } from './utils/general';
 
+  let flowerAmount = 1;
   let timeInMins = 720;
   let showAngle = false;
   let animateBee = false;
@@ -65,7 +66,7 @@
   </section>
   <section class="lower">
     <div class="inputs-container">
-      <div class="time-input-container">
+      <div class="range-input-container">
         <label for="time-input">Time: {minsToTime(timeInMins)}</label>
         <Range
           on:change={updateTime}
@@ -75,6 +76,10 @@
           showTooltip={false}
           id="time-input"
         />
+      </div>
+      <div class="flower-amount-input-container">
+        <label for="flower-amount">flowers</label>
+        <input type="number" class="flower-amount-input" bind:value={flowerAmount} min={1} max={5} />
       </div>
       <div class="check-boxes-container">
         <div class="check-box-container">
@@ -126,10 +131,21 @@
     color: rgb(230, 230, 230);
   }
 
-  .time-input-container {
+  .range-input-container {
     display: flex;
     width: 50%;
     margin-bottom: 1rem;
+  }
+
+  .flower-amount-input-container {
+    width: max(10%, 7rem);
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .flower-amount-input {
+    width: 3rem;
   }
 
   .canvas-container {
