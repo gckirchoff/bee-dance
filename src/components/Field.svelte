@@ -16,6 +16,7 @@
   import { Angle } from '../utils/draw/agents/Angle';
 
   export let timeInMins: number;
+  export let flowerAmount = 1;
   export let showAngle = false;
 
   export let updateSunPosition: (position: Vector) => void;
@@ -70,7 +71,7 @@
 
       field.draw(ctx);
       if (flowerLocation) {
-        field.drawFlower(flowerLocation, ctx);
+        field.drawFlower(flowerLocation, ctx, flowerAmount);
       }
       beehive.draw(ctx);
 

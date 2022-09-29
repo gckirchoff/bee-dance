@@ -20,6 +20,7 @@
   export let flowerPosition: Vector;
 
   export let maxDistanceFromHive: number;
+  export let flowerAmount = 1;
   export let showAngle = false;
   export let animateBee = false;
 
@@ -75,7 +76,11 @@
       });
 
       if (animateBee) {
-        beeAgent.updateBeePosition(t, flowerDistance);
+        beeAgent.updateBeePosition({
+          t,
+          flowerDistance,
+          waggleAngle: toRadians(2 + flowerAmount),
+        });
       } else {
         beeAgent.resetBeePosition(t);
       }

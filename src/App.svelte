@@ -42,6 +42,7 @@
     <div class="canvas-container left">
       <Field
         {timeInMins}
+        {flowerAmount}
         {showAngle}
         {updateSunPosition}
         {updateHivePosition}
@@ -56,6 +57,7 @@
           {hivePosition}
           {flowerPosition}
           {maxDistanceFromHive}
+          {flowerAmount}
           {showAngle}
           {animateBee}
         />
@@ -79,7 +81,13 @@
       </div>
       <div class="flower-amount-input-container">
         <label for="flower-amount">flowers</label>
-        <input type="number" class="flower-amount-input" bind:value={flowerAmount} min={1} max={5} />
+        <input
+          type="number"
+          class="flower-amount-input"
+          bind:value={flowerAmount}
+          min={1}
+          max={5}
+        />
       </div>
       <div class="check-boxes-container">
         <div class="check-box-container">

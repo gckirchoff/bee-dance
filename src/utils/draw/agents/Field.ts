@@ -1,4 +1,4 @@
-import { average } from '../../general';
+import { average, randomRange } from '../../general';
 import { Flower } from './Flower';
 import { Vector } from './Vector';
 
@@ -49,9 +49,26 @@ export class Field {
     Math.pow(x - this.center.x, 2) + Math.pow(y - this.center.y, 2) <
     Math.pow(this.radius, 2);
 
-  drawFlower = (flowerLocation: Vector, ctx: CanvasRenderingContext2D) => {
+  drawFlower = (
+    flowerLocation: Vector,
+    ctx: CanvasRenderingContext2D,
+    flowerAmount = 1
+  ) => {
     const flower = new Flower(flowerLocation, this.w, this.h);
     flower.draw(ctx);
+    const flowerDisplacements = [
+      [12, -12],
+      [10, 5],
+      [-12, -10],
+      [-12, 7],
+    ];
+    for (let i = 1; i < flowerAmount; i++) {
+      const [x, y] = flowerDisplacements[i - 1];
+      ctx.save();
+      ctx.translate(x, y);
+      flower.draw(ctx);
+      ctx.restore();
+    }
   };
 
   private generateGrass = (num = 100): Vector[] => {

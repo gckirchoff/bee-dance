@@ -30,6 +30,7 @@ export class BeeAgent {
   private danceRight = false;
   private previousFlowerDistance = 0;
   private danceStage = DanceStage.WAGGLE;
+  private waggleFlip = 1;
 
   private x = 0;
   private y = 0;
@@ -93,7 +94,15 @@ export class BeeAgent {
     ctx.restore();
   };
 
-  updateBeePosition = (t: number, flowerDistance: number) => {
+  updateBeePosition = ({
+    t,
+    flowerDistance,
+    waggleAngle,
+  }: {
+    t: number;
+    flowerDistance: number;
+    waggleAngle: number;
+  }) => {
     const wagglePortionDuration = scale({
       num: flowerDistance,
       inRange: [0, this.maxDistanceFromHive],
@@ -132,10 +141,11 @@ export class BeeAgent {
           outRange: [0, distanceToCover],
         }) * -1;
 
-      this.updateWaggleAngle();
+      this.updateWaggleAngle(waggleAngle);
     } else {
       this.danceStage = DanceStage.ROUND;
-      const percentThroughRound = ((timeInCircuit - wagglePortionDuration) / this.roundDuration) * 100;
+      const percentThroughRound =
+        ((timeInCircuit - wagglePortionDuration) / this.roundDuration) * 100;
       const radius = this.h * 0.3;
       const angle =
         scale({
@@ -169,9 +179,10 @@ export class BeeAgent {
     }
   };
 
-  private updateWaggleAngle = () => {
+  private updateWaggleAngle = (angle: number) => {
     if (Math.random() > 0.3) {
-      this.waggleAngle = -this.waggleAngle;
+      this.waggleFlip = -this.waggleFlip;
     }
+    this.waggleAngle = angle * this.waggleFlip;
   };
 }
