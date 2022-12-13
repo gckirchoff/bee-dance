@@ -33,7 +33,7 @@
   let hivePosition: Vector;
   let flowerLocation: Vector;
 
-  let handleCanvasClick: (e: Event) => void;
+  let handleCanvasClick: (e: MouseEvent) => void;
 
   onMount(() => {
     canvas.width = w;
